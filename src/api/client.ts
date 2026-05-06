@@ -62,6 +62,9 @@ export const api = {
   getJobStats: () =>
     request<Record<string, number>>('/jobs/stats'),
 
+  getDocument: (id: string) =>
+    request<unknown>(`/documents/${id}`),
+
   getDomains: () =>
     request<unknown[]>('/domains'),
 

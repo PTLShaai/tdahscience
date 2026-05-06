@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect, useCallback } from 'react'
-import { Upload, FileText, Clock, CheckCircle, XCircle, AlertTriangle, RefreshCw } from 'lucide-react'
+import { Upload, FileText, Clock, CheckCircle, XCircle, AlertTriangle, RefreshCw, ChevronRight } from 'lucide-react'
+import { useNavigate } from 'react-router-dom'
 import { api, DocumentRow } from '../api/client'
 
 const statusConfig: Record<string, { icon: typeof Clock; color: string; label: string }> = {
@@ -14,6 +15,7 @@ export default function Documents() {
   const [docs, setDocs] = useState<DocumentRow[]>([])
   const [uploading, setUploading] = useState(false)
   const [uploadMsg, setUploadMsg] = useState('')
+  const navigate = useNavigate()
   const [loading, setLoading] = useState(true)
   const fileRef = useRef<HTMLInputElement>(null)
 
@@ -117,7 +119,7 @@ export default function Documents() {
             const st = doc.job_status || 'pending'
             const { icon: StatusIcon, color, label } = statusConfig[st] || statusConfig['pending']
             return (
-              <div key={doc.id} className="card" style={{ padding: '13px 18px' }}>
+              <div key={doc.id} className="card" onClick={() => navigate(`/documents/${doc.id}`)} style={{ padding: '13px 18px', cursor: 'pointer', transition: 'border-color 0.12s' }} onMouseEnter={e => (e.currentTarget.style.borderColor = 'var(--accent)')} onMouseLeave={e => (e.currentTarget.style.borderColor = 'var(--border)')}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
                   <FileText size={15} color="var(--text-muted)" style={{ flexShrink: 0 }} />
                   <div style={{ flex: 1, minWidth: 0 }}>
