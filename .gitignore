@@ -1,0 +1,9 @@
+node_modules/
+dist/
+client/
+.env
+*.local
+server/dist/
+server/node_modules/
+uploads/
+*.pdf
