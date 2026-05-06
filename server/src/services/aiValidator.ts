@@ -62,6 +62,7 @@ Réponds UNIQUEMENT en JSON :
       model: config.aiSecondaryModel,
       max_tokens: 800,
       temperature: 0.1,
+      stream: false,
       messages: [{ role: 'user', content: validationPrompt }],
     })
 
