@@ -194,3 +194,25 @@ router.post('/:id/retry', async (req: AuthRequest, res: Response): Promise<void>
     res.status(500).json({ error: 'Erreur serveur' })
   }
 })
+
+// DELETE /api/documents/:id — supprimer un document
+router.delete('/:id', async (req: AuthRequest, res: Response): Promise<void> => {
+  try {
+    const rows = await query<{ file_path: string }>(
+      'SELECT file_path FROM documents WHERE id = $1',
+      [req.params.id]
+    )
+    if (rows.length === 0) {
+      res.status(404).json({ error: 'Document introuvable' })
+      return
+    }
+    // Supprimer le fichier physique
+    const fs = await import('fs')
+    try { fs.unlinkSync(rows[0].file_path) } catch { /* fichier déjà absent */ }
+    // Supprimer en cascade (jobs, analyses, domains via FK)
+    await query('DELETE FROM documents WHERE id = $1', [req.params.id])
+    res.json({ ok: true })
+  } catch {
+    res.status(500).json({ error: 'Erreur serveur' })
+  }
+})

@@ -71,6 +71,9 @@ export const api = {
   getDomains: () =>
     request<unknown[]>('/domains'),
 
+  deleteDocument: (id: string) =>
+    request<{ok: boolean}>(`/documents/${id}`, { method: 'DELETE' }),
+
   retryDocument: (id: string) =>
     request<{ok: boolean}>(`/documents/${id}/retry`, { method: 'POST' }),
 
