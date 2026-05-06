@@ -65,6 +65,9 @@ export const api = {
   getDocument: (id: string) =>
     request<unknown>(`/documents/${id}`),
 
+  getDomainBySlug: (slug: string) =>
+    request<unknown>(`/domains/${slug}`),
+
   getDomains: () =>
     request<unknown[]>('/domains'),
 

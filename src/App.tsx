@@ -5,13 +5,14 @@ import Dashboard from './pages/Dashboard'
 import Documents from './pages/Documents'
 import DocumentDetail from './pages/DocumentDetail'
 import Domains from './pages/Domains'
+import DomainDetail from './pages/DomainDetail'
 import Login from './pages/Login'
 
 function PrivateRoute({ children }: { children: React.ReactNode }) {
   return isLoggedIn() ? <>{children}</> : <Navigate to="/login" replace />
 }
 
-function App() {
+export default function App() {
   return (
     <BrowserRouter>
       <Routes>
@@ -22,10 +23,9 @@ function App() {
           <Route path="documents" element={<Documents />} />
           <Route path="documents/:id" element={<DocumentDetail />} />
           <Route path="domains" element={<Domains />} />
+          <Route path="domains/:slug" element={<DomainDetail />} />
         </Route>
       </Routes>
     </BrowserRouter>
   )
 }
-
-export default App

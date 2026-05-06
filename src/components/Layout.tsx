@@ -1,5 +1,6 @@
 import { Outlet, NavLink, useNavigate } from 'react-router-dom'
 import { LayoutDashboard, FileText, Tag, LogOut, FlaskConical } from 'lucide-react'
+import { clearToken } from '../api/client'
 
 export default function Layout() {
   const navigate = useNavigate()
@@ -12,55 +13,34 @@ export default function Layout() {
 
   return (
     <div style={{ display: 'flex', minHeight: '100vh' }}>
-      {/* Sidebar */}
       <aside style={{
-        width: 220,
-        background: 'var(--bg-2)',
-        borderRight: '1px solid var(--border)',
-        display: 'flex',
-        flexDirection: 'column',
-        padding: '24px 0',
-        flexShrink: 0,
+        width: 230, background: '#1e2440',
+        display: 'flex', flexDirection: 'column', padding: '28px 0', flexShrink: 0,
       }}>
         {/* Logo */}
-        <div style={{ padding: '0 20px 28px' }}>
+        <div style={{ padding: '0 20px 32px' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-            <FlaskConical size={22} color="var(--accent)" />
-            <span style={{
-              fontFamily: 'var(--font-display)',
-              fontSize: 18,
-              color: 'var(--text)',
-              letterSpacing: '-0.02em',
-            }}>
+            <FlaskConical size={22} color="#6b8fe8" />
+            <span style={{ fontFamily: 'var(--font-display)', fontSize: 18, color: '#fff', letterSpacing: '-0.01em' }}>
               TDAH Science
             </span>
           </div>
-          <div style={{ fontSize: 11, color: 'var(--text-muted)', marginTop: 4, paddingLeft: 32 }}>
+          <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.35)', marginTop: 4, paddingLeft: 32 }}>
             Veille scientifique
           </div>
         </div>
 
         {/* Nav */}
-        <nav style={{ flex: 1, padding: '0 10px' }}>
+        <nav style={{ flex: 1, padding: '0 12px' }}>
           {navItems.map(({ to, icon: Icon, label }) => (
-            <NavLink
-              key={to}
-              to={to}
-              style={({ isActive }) => ({
-                display: 'flex',
-                alignItems: 'center',
-                gap: 10,
-                padding: '9px 12px',
-                borderRadius: 'var(--radius)',
-                marginBottom: 2,
-                color: isActive ? 'var(--text)' : 'var(--text-muted)',
-                background: isActive ? 'var(--bg-3)' : 'transparent',
-                textDecoration: 'none',
-                fontSize: 13,
-                fontWeight: isActive ? 500 : 400,
-                transition: 'all 0.12s',
-              })}
-            >
+            <NavLink key={to} to={to} style={({ isActive }) => ({
+              display: 'flex', alignItems: 'center', gap: 10,
+              padding: '10px 12px', borderRadius: 8, marginBottom: 2,
+              color: isActive ? '#fff' : 'rgba(255,255,255,0.5)',
+              background: isActive ? 'rgba(107,143,232,0.2)' : 'transparent',
+              textDecoration: 'none', fontSize: 14, fontWeight: isActive ? 500 : 400,
+              transition: 'all 0.12s',
+            })}>
               <Icon size={16} />
               {label}
             </NavLink>
@@ -68,20 +48,20 @@ export default function Layout() {
         </nav>
 
         {/* Footer */}
-        <div style={{ padding: '0 10px' }}>
-          <button
-            onClick={() => navigate('/login')}
-            className="btn btn-ghost"
-            style={{ width: '100%', justifyContent: 'flex-start', gap: 10, fontSize: 13 }}
-          >
-            <LogOut size={15} />
-            Déconnexion
+        <div style={{ padding: '0 12px' }}>
+          <button onClick={() => { clearToken(); navigate('/login') }}
+            style={{ display: 'flex', alignItems: 'center', gap: 10, width: '100%',
+              padding: '10px 12px', borderRadius: 8, background: 'none', border: 'none',
+              color: 'rgba(255,255,255,0.4)', fontSize: 14, cursor: 'pointer',
+              transition: 'color 0.12s' }}
+            onMouseEnter={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.8)')}
+            onMouseLeave={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.4)')}>
+            <LogOut size={15} /> Déconnexion
           </button>
         </div>
       </aside>
 
-      {/* Main */}
-      <main style={{ flex: 1, overflow: 'auto' }}>
+      <main style={{ flex: 1, overflow: 'auto', background: 'var(--bg)' }}>
         <Outlet />
       </main>
     </div>

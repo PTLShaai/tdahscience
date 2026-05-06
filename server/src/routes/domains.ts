@@ -112,3 +112,40 @@ router.get('/trends', async (_req: Request, res: Response): Promise<void> => {
 })
 
 export default router
+
+// GET /api/domains/:slug — détail d'un domaine + documents associés
+router.get('/:slug', async (req: Request, res: Response): Promise<void> => {
+  try {
+    const rows = await query<{ id: string; slug: string; label: string; doc_count: number }>(
+      `SELECT rd.id, rd.slug, rd.label,
+              COUNT(DISTINCT dd.document_id)::int as doc_count
+       FROM research_domains rd
+       LEFT JOIN document_domains dd ON rd.id = dd.domain_id
+       WHERE rd.slug = $1
+       GROUP BY rd.id`,
+      [req.params.slug]
+    )
+    if (rows.length === 0) {
+      res.status(404).json({ error: 'Domaine introuvable' })
+      return
+    }
+
+    const domain = rows[0]
+
+    const docs = await query(
+      `SELECT d.id, d.title, d.file_name, d.year, d.study_type,
+              da.n_grade, da.validation_status, da.university_flag,
+              da.total_n, da.key_findings_literal
+       FROM documents d
+       JOIN document_domains dd ON d.id = dd.document_id
+       LEFT JOIN document_analyses da ON d.id = da.document_id
+       WHERE dd.domain_id = $1
+       ORDER BY d.year DESC NULLS LAST`,
+      [domain.id]
+    )
+
+    res.json({ ...domain, documents: docs })
+  } catch {
+    res.status(500).json({ error: 'Erreur serveur' })
+  }
+})
