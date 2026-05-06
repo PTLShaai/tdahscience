@@ -119,7 +119,7 @@ Format attendu :
 export async function extractWithClaude(text: string): Promise<ExtractionResult> {
   const message = await client.messages.create({
     model: config.aiPrimaryModel,
-    max_tokens: 4000,
+    max_tokens: 6000,
     messages: [
       {
         role: 'user',
@@ -134,11 +134,29 @@ export async function extractWithClaude(text: string): Promise<ExtractionResult>
   }
 
   // Nettoyer la réponse (enlever éventuels backticks)
-  const cleaned = content.text
+  let cleaned = content.text
     .replace(/^```json\s*/i, '')
     .replace(/^```\s*/i, '')
     .replace(/\s*```$/i, '')
     .trim()
+
+  // Si le JSON est tronqué, tenter de le fermer proprement
+  if (!cleaned.endsWith('}')) {
+    // Trouver la dernière propriété complète et fermer le JSON
+    const lastComma = cleaned.lastIndexOf(',')
+    const lastBrace = cleaned.lastIndexOf('}')
+    if (lastComma > lastBrace) {
+      cleaned = cleaned.slice(0, lastComma) + '}'
+    } else {
+      cleaned = cleaned + '}'
+    }
+    // S'assurer que les tableaux ouverts sont fermés
+    const openBrackets = (cleaned.match(/\[/g) || []).length
+    const closeBrackets = (cleaned.match(/\]/g) || []).length
+    if (openBrackets > closeBrackets) {
+      cleaned = cleaned.slice(0, cleaned.lastIndexOf('[')) + '[]}'
+    }
+  }
 
   return JSON.parse(cleaned) as ExtractionResult
 }

@@ -12,6 +12,14 @@ interface ImportJob {
   file_name: string
 }
 
+
+// Nettoyer les valeurs avant insertion en BDD
+function toIntOrNull(val: unknown): number | null {
+  if (val === null || val === undefined || val === '') return null
+  const n = parseFloat(String(val))
+  return isNaN(n) ? null : Math.round(n)
+}
+
 // Calculer le grade de population
 function computeNGrade(n: number | null): 'A' | 'B' | 'C' | 'D' | 'E' | 'F' | null {
   if (n === null) return null
@@ -138,11 +146,11 @@ async function processJob(job: ImportJob): Promise<void> {
        updated_at = NOW()`,
     [
       job.document_id,
-      extraction.total_n,
-      extraction.analysis_n,
+      toIntOrNull(extraction.total_n),
+      toIntOrNull(extraction.analysis_n),
       nGrade,
-      extraction.age_min,
-      extraction.age_max,
+      toIntOrNull(extraction.age_min),
+      toIntOrNull(extraction.age_max),
       extraction.age_range_literal,
       extraction.diagnosis_context_literal,
       extraction.recruitment_type,
