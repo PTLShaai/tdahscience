@@ -125,7 +125,7 @@ router.get('/', async (req: AuthRequest, res: Response): Promise<void> => {
       FROM documents d
       LEFT JOIN document_analyses da ON d.id = da.document_id
       LEFT JOIN LATERAL (
-        SELECT status FROM import_jobs
+        SELECT status, error_message, attempt_count FROM import_jobs
         WHERE document_id = d.id
         ORDER BY created_at DESC LIMIT 1
       ) ij ON true
