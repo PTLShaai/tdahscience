@@ -114,7 +114,7 @@ router.get('/', async (req: AuthRequest, res: Response): Promise<void> => {
     let sql = `
       SELECT d.id, d.title, d.year, d.journal, d.study_type, d.file_name,
              da.n_grade, da.validation_status, da.extraction_confidence,
-             ij.status as job_status,
+             ij.status as job_status, ij.error_message as job_error, ij.attempt_count,
              COALESCE(
                (SELECT json_agg(rd.label)
                 FROM document_domains dd
@@ -174,3 +174,23 @@ router.get('/:id', async (req: AuthRequest, res: Response): Promise<void> => {
 })
 
 export default router
+
+// POST /api/documents/:id/retry — relancer l'analyse d'un doc en erreur
+router.post('/:id/retry', async (req: AuthRequest, res: Response): Promise<void> => {
+  try {
+    const result = await query<{ id: string }>(
+      `UPDATE import_jobs
+       SET status = 'pending', attempt_count = 0, error_message = NULL, started_at = NULL
+       WHERE document_id = $1 AND status = 'error'
+       RETURNING id`,
+      [req.params.id]
+    )
+    if (result.length === 0) {
+      res.status(404).json({ error: 'Aucun job en erreur pour ce document' })
+      return
+    }
+    res.json({ ok: true, job_id: result[0].id })
+  } catch {
+    res.status(500).json({ error: 'Erreur serveur' })
+  }
+})

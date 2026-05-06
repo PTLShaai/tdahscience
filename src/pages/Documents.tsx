@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect, useCallback } from 'react'
-import { Upload, FileText, Clock, CheckCircle, XCircle, AlertTriangle, RefreshCw, ChevronRight } from 'lucide-react'
+import { Upload, FileText, Clock, CheckCircle, XCircle, AlertTriangle, RefreshCw, ChevronRight, RotateCcw } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 import { api, DocumentRow } from '../api/client'
 
@@ -42,6 +42,16 @@ export default function Documents() {
     }, 6000)
     return () => clearInterval(interval)
   }, [docs, loadDocs])
+
+  const handleRetry = async (e: React.MouseEvent, docId: string) => {
+    e.stopPropagation()
+    try {
+      await api.retryDocument(docId)
+      await loadDocs()
+    } catch (err) {
+      console.error('Retry failed:', err)
+    }
+  }
 
   const handleFiles = async (files: FileList | null) => {
     if (!files) return

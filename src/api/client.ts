@@ -71,6 +71,9 @@ export const api = {
   getDomains: () =>
     request<unknown[]>('/domains'),
 
+  retryDocument: (id: string) =>
+    request<{ok: boolean}>(`/documents/${id}/retry`, { method: 'POST' }),
+
   getTopics: () =>
     request<Topic[]>('/topics'),
 }
@@ -84,6 +87,8 @@ export interface DocumentRow {
   n_grade: string | null
   validation_status: string | null
   job_status: string | null
+  job_error: string | null
+  attempt_count: number | null
   domains: string[]
 }
 
