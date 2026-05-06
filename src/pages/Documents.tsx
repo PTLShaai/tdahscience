@@ -1,47 +1,80 @@
-import { useState, useRef } from 'react'
-import { Upload, FileText, Clock, CheckCircle, XCircle, AlertTriangle } from 'lucide-react'
+import { useState, useRef, useEffect } from 'react'
+import { Upload, FileText, Clock, CheckCircle, XCircle, AlertTriangle, RefreshCw } from 'lucide-react'
+import { api, DocumentRow } from '../api/client'
 
 type JobStatus = 'pending' | 'processing' | 'done' | 'error'
 
-interface DocRow {
-  id: string
-  title: string
-  year?: number
-  status: JobStatus
-  n_grade?: string
-  domains?: string[]
-  error?: string
-}
-
-const statusConfig: Record<JobStatus, { icon: typeof Clock; color: string; label: string }> = {
-  pending:    { icon: Clock,         color: 'var(--text-muted)', label: 'En attente' },
-  processing: { icon: Clock,         color: 'var(--accent-warn)', label: 'Analyse…' },
-  done:       { icon: CheckCircle,   color: 'var(--accent-2)',   label: 'Analysé' },
-  error:      { icon: XCircle,       color: 'var(--accent-danger)', label: 'Erreur' },
+const statusConfig: Record<string, { icon: typeof Clock; color: string; label: string }> = {
+  pending:    { icon: Clock,       color: 'var(--text-muted)',    label: 'En attente' },
+  processing: { icon: RefreshCw,   color: 'var(--accent-warn)',   label: 'Analyse…' },
+  done:       { icon: CheckCircle, color: 'var(--accent-2)',      label: 'Analysé' },
+  error:      { icon: XCircle,     color: 'var(--accent-danger)', label: 'Erreur' },
+  null:       { icon: Clock,       color: 'var(--text-muted)',    label: 'En attente' },
 }
 
 export default function Documents() {
   const [dragging, setDragging] = useState(false)
+  const [docs, setDocs] = useState<DocumentRow[]>([])
+  const [uploading, setUploading] = useState(false)
+  const [uploadMsg, setUploadMsg] = useState('')
   const fileRef = useRef<HTMLInputElement>(null)
-  const [docs] = useState<DocRow[]>([])
 
-  const handleFiles = (files: FileList | null) => {
+  const loadDocs = async () => {
+    try {
+      const data = await api.getDocuments()
+      setDocs(data)
+    } catch (err) {
+      console.error('Erreur chargement docs:', err)
+    }
+  }
+
+  useEffect(() => {
+    loadDocs()
+    // Rafraîchir toutes les 8s si des jobs sont en cours
+    const interval = setInterval(() => {
+      if (docs.some(d => d.job_status === 'pending' || d.job_status === 'processing')) {
+        loadDocs()
+      }
+    }, 8000)
+    return () => clearInterval(interval)
+  }, [docs.length])
+
+  const handleFiles = async (files: FileList | null) => {
     if (!files) return
     const pdfs = Array.from(files).filter(f => f.type === 'application/pdf')
     if (pdfs.length === 0) return
-    // TODO: upload via API
-    console.log('Files to upload:', pdfs.map(f => f.name))
+
+    setUploading(true)
+    setUploadMsg(`Upload de ${pdfs.length} fichier(s)…`)
+    try {
+      const result = await api.uploadPdfs(pdfs)
+      const queued  = result.results.filter(r => r.status === 'queued').length
+      const dupes   = result.results.filter(r => r.status === 'duplicate').length
+      const errors  = result.results.filter(r => r.status === 'error').length
+      setUploadMsg(
+        `${queued} en queue${dupes ? ` · ${dupes} doublon(s)` : ''}${errors ? ` · ${errors} erreur(s)` : ''}`
+      )
+      await loadDocs()
+      setTimeout(() => setUploadMsg(''), 5000)
+    } catch (err) {
+      setUploadMsg(`Erreur : ${err instanceof Error ? err.message : String(err)}`)
+    } finally {
+      setUploading(false)
+    }
   }
 
   return (
     <div style={{ padding: 32 }}>
-      <div style={{ marginBottom: 28 }}>
-        <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 28, marginBottom: 6 }}>
-          Documents
-        </h1>
-        <p style={{ color: 'var(--text-muted)', fontSize: 14 }}>
-          Importez vos PDFs scientifiques — l'analyse est effectuée automatiquement
-        </p>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 28 }}>
+        <div>
+          <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 28, marginBottom: 6 }}>Documents</h1>
+          <p style={{ color: 'var(--text-muted)', fontSize: 14 }}>
+            Importez vos PDFs — l'analyse IA démarre automatiquement
+          </p>
+        </div>
+        <button onClick={loadDocs} className="btn btn-ghost" style={{ gap: 6 }}>
+          <RefreshCw size={14} /> Actualiser
+        </button>
       </div>
 
       {/* Drop zone */}
@@ -50,77 +83,62 @@ export default function Documents() {
         onDragOver={e => { e.preventDefault(); setDragging(true) }}
         onDragLeave={() => setDragging(false)}
         onDrop={e => { e.preventDefault(); setDragging(false); handleFiles(e.dataTransfer.files) }}
-        onClick={() => fileRef.current?.click()}
+        onClick={() => !uploading && fileRef.current?.click()}
         style={{
           borderStyle: 'dashed',
           borderColor: dragging ? 'var(--accent)' : 'var(--border)',
           background: dragging ? 'rgba(91,141,238,0.04)' : 'var(--bg-2)',
-          cursor: 'pointer',
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-          gap: 10,
-          padding: 40,
-          marginBottom: 24,
+          cursor: uploading ? 'wait' : 'pointer',
+          display: 'flex', flexDirection: 'column', alignItems: 'center',
+          justifyContent: 'center', gap: 10, padding: 36, marginBottom: 16,
           transition: 'all 0.15s',
         }}
       >
-        <Upload size={28} color={dragging ? 'var(--accent)' : 'var(--text-muted)'} />
+        <Upload size={26} color={dragging ? 'var(--accent)' : 'var(--text-muted)'} />
         <div style={{ textAlign: 'center' }}>
-          <div style={{ fontSize: 14, fontWeight: 500, marginBottom: 4 }}>
-            Glissez vos PDFs ici ou cliquez pour sélectionner
+          <div style={{ fontSize: 14, fontWeight: 500, marginBottom: 3 }}>
+            {uploading ? 'Upload en cours…' : 'Glissez vos PDFs ici ou cliquez'}
           </div>
-          <div style={{ fontSize: 12, color: 'var(--text-muted)' }}>
-            Plusieurs fichiers acceptés — traitement par batch
-          </div>
+          <div style={{ fontSize: 12, color: 'var(--text-muted)' }}>Plusieurs fichiers acceptés</div>
         </div>
-        <input
-          ref={fileRef}
-          type="file"
-          accept=".pdf"
-          multiple
-          style={{ display: 'none' }}
-          onChange={e => handleFiles(e.target.files)}
-        />
+        <input ref={fileRef} type="file" accept=".pdf" multiple style={{ display: 'none' }}
+          onChange={e => handleFiles(e.target.files)} />
       </div>
 
-      {/* Documents list */}
+      {/* Message upload */}
+      {uploadMsg && (
+        <div style={{ marginBottom: 16, padding: '10px 14px', background: 'var(--bg-3)',
+          borderRadius: 8, fontSize: 13, color: 'var(--text-muted)', border: '1px solid var(--border)' }}>
+          {uploadMsg}
+        </div>
+      )}
+
+      {/* Liste des documents */}
       {docs.length === 0 ? (
-        <div style={{
-          textAlign: 'center',
-          padding: '48px 0',
-          color: 'var(--text-muted)',
-          fontSize: 13,
-        }}>
+        <div style={{ textAlign: 'center', padding: '48px 0', color: 'var(--text-muted)', fontSize: 13 }}>
           <FileText size={32} style={{ marginBottom: 12, opacity: 0.3 }} />
           <div>Aucun document importé</div>
         </div>
       ) : (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
           {docs.map(doc => {
-            const { icon: StatusIcon, color, label } = statusConfig[doc.status]
+            const st = doc.job_status || 'pending'
+            const { icon: StatusIcon, color, label } = statusConfig[st] || statusConfig['pending']
             return (
-              <div key={doc.id} className="card" style={{ padding: '14px 18px' }}>
+              <div key={doc.id} className="card" style={{ padding: '13px 18px' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-                  <FileText size={16} color="var(--text-muted)" style={{ flexShrink: 0 }} />
+                  <FileText size={15} color="var(--text-muted)" style={{ flexShrink: 0 }} />
                   <div style={{ flex: 1, minWidth: 0 }}>
-                    <div style={{ fontSize: 13, fontWeight: 500, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                      {doc.title}
+                    <div style={{ fontSize: 13, fontWeight: 500, whiteSpace: 'nowrap',
+                      overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                      {doc.title || doc.file_name}
                     </div>
-                    <div style={{ display: 'flex', gap: 8, marginTop: 4, alignItems: 'center' }}>
+                    <div style={{ display: 'flex', gap: 6, marginTop: 4, flexWrap: 'wrap', alignItems: 'center' }}>
                       {doc.year && <span style={{ fontSize: 11, color: 'var(--text-muted)' }}>{doc.year}</span>}
-                      {doc.n_grade && (
-                        <span className={`badge badge-${doc.n_grade}`}>{doc.n_grade}</span>
-                      )}
-                      {doc.domains?.slice(0, 3).map(d => (
-                        <span key={d} style={{
-                          fontSize: 11,
-                          color: 'var(--accent)',
-                          background: 'rgba(91,141,238,0.1)',
-                          padding: '1px 6px',
-                          borderRadius: 4,
-                        }}>{d}</span>
+                      {doc.n_grade && <span className={`badge badge-${doc.n_grade}`}>{doc.n_grade}</span>}
+                      {doc.domains?.slice(0, 4).map((d: string) => (
+                        <span key={d} style={{ fontSize: 11, color: 'var(--accent)',
+                          background: 'rgba(91,141,238,0.1)', padding: '1px 6px', borderRadius: 4 }}>{d}</span>
                       ))}
                     </div>
                   </div>
@@ -129,12 +147,6 @@ export default function Documents() {
                     {label}
                   </div>
                 </div>
-                {doc.error && (
-                  <div style={{ marginTop: 8, display: 'flex', gap: 6, color: 'var(--accent-danger)', fontSize: 12 }}>
-                    <AlertTriangle size={13} style={{ flexShrink: 0, marginTop: 1 }} />
-                    {doc.error}
-                  </div>
-                )}
               </div>
             )
           })}
