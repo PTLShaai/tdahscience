@@ -2,18 +2,18 @@ import express from 'express'
 import cors from 'cors'
 import path from 'path'
 import { config } from './config'
-import authRoutes     from './routes/auth'
-import topicsRoutes   from './routes/topics'
+import authRoutes      from './routes/auth'
+import topicsRoutes    from './routes/topics'
 import documentsRoutes from './routes/documents'
-import domainsRoutes  from './routes/domains'
-import jobsRoutes     from './routes/jobs'
+import domainsRoutes   from './routes/domains'
+import jobsRoutes      from './routes/jobs'
 
 const app = express()
 
 app.use(cors())
 app.use(express.json())
 
-// Servir les PDFs uploadés (accès restreint par auth dans le futur)
+// Servir les PDFs uploadés
 app.use('/uploads', express.static(config.uploadsDir))
 
 // Routes API
@@ -28,8 +28,7 @@ app.get('/api/health', (_req, res) => {
   res.json({ status: 'ok', version: '1.0.0', timestamp: new Date().toISOString() })
 })
 
-// Frontend (en production, Nginx sert les fichiers statiques)
-// En dev, Vite proxy gère ça
+// Frontend en production
 if (process.env.NODE_ENV === 'production') {
   const clientDir = path.join(__dirname, '../../client')
   app.use(express.static(clientDir))
@@ -43,6 +42,11 @@ app.listen(config.port, () => {
   console.log(`   IA primaire  : ${config.aiPrimaryModel}`)
   console.log(`   IA secondaire: ${config.aiSecondaryModel}`)
   console.log(`   Uploads      : ${config.uploadsDir}`)
+
+  // Démarrer le worker d'extraction en arrière-plan
+  import('./worker').then(({ startWorker }) => {
+    startWorker().catch(err => console.error('[worker] Erreur démarrage:', err))
+  })
 })
 
 export default app
