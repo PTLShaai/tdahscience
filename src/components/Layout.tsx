@@ -25,7 +25,7 @@ export default function Layout() {
               TDAH Science
             </span>
           </div>
-          <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.35)', marginTop: 4, paddingLeft: 32 }}>
+          <div style={{ fontSize: 15, color: 'rgba(255,255,255,0.35)', marginTop: 4, paddingLeft: 32 }}>
             Veille scientifique
           </div>
         </div>
@@ -38,7 +38,7 @@ export default function Layout() {
               padding: '10px 12px', borderRadius: 8, marginBottom: 2,
               color: isActive ? '#fff' : 'rgba(255,255,255,0.5)',
               background: isActive ? 'rgba(107,143,232,0.2)' : 'transparent',
-              textDecoration: 'none', fontSize: 14, fontWeight: isActive ? 500 : 400,
+              textDecoration: 'none', fontSize: 16, fontWeight: isActive ? 500 : 400,
               transition: 'all 0.12s',
             })}>
               <Icon size={16} />
@@ -52,7 +52,7 @@ export default function Layout() {
           <button onClick={() => { clearToken(); navigate('/login') }}
             style={{ display: 'flex', alignItems: 'center', gap: 10, width: '100%',
               padding: '10px 12px', borderRadius: 8, background: 'none', border: 'none',
-              color: 'rgba(255,255,255,0.4)', fontSize: 14, cursor: 'pointer',
+              color: 'rgba(255,255,255,0.4)', fontSize: 16, cursor: 'pointer',
               transition: 'color 0.12s' }}
             onMouseEnter={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.8)')}
             onMouseLeave={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.4)')}>

@@ -36,7 +36,7 @@ export default function Login() {
         <div style={{ textAlign: 'center', marginBottom: 36 }}>
           <FlaskConical size={32} color="var(--accent)" style={{ marginBottom: 12 }} />
           <div style={{ fontFamily: 'var(--font-display)', fontSize: 26 }}>TDAH Science</div>
-          <div style={{ color: 'var(--text-muted)', fontSize: 13, marginTop: 4 }}>
+          <div style={{ color: 'var(--text-muted)', fontSize: 15, marginTop: 4 }}>
             Veille scientifique personnelle
           </div>
         </div>
@@ -44,19 +44,19 @@ export default function Login() {
         <div className="card">
           <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
             <div>
-              <label style={{ display: 'block', fontSize: 12, color: 'var(--text-muted)', marginBottom: 5 }}>Email</label>
+              <label style={{ display: 'block', fontSize: 15, color: 'var(--text-muted)', marginBottom: 5 }}>Email</label>
               <input type="email" value={email} onChange={e => setEmail(e.target.value)} required
                 style={{ width: '100%', background: 'var(--bg-3)', border: '1px solid var(--border)',
-                  borderRadius: 'var(--radius)', padding: '9px 12px', color: 'var(--text)', fontSize: 14, outline: 'none' }} />
+                  borderRadius: 'var(--radius)', padding: '9px 12px', color: 'var(--text)', fontSize: 16, outline: 'none' }} />
             </div>
             <div>
-              <label style={{ display: 'block', fontSize: 12, color: 'var(--text-muted)', marginBottom: 5 }}>Mot de passe</label>
+              <label style={{ display: 'block', fontSize: 15, color: 'var(--text-muted)', marginBottom: 5 }}>Mot de passe</label>
               <input type="password" value={password} onChange={e => setPassword(e.target.value)} required
                 style={{ width: '100%', background: 'var(--bg-3)', border: '1px solid var(--border)',
-                  borderRadius: 'var(--radius)', padding: '9px 12px', color: 'var(--text)', fontSize: 14, outline: 'none' }} />
+                  borderRadius: 'var(--radius)', padding: '9px 12px', color: 'var(--text)', fontSize: 16, outline: 'none' }} />
             </div>
             {error && (
-              <div style={{ fontSize: 12, color: 'var(--accent-danger)', padding: '8px 10px',
+              <div style={{ fontSize: 15, color: 'var(--accent-danger)', padding: '8px 10px',
                 background: '#33181820', borderRadius: 6 }}>{error}</div>
             )}
             <button type="submit" disabled={loading} className="btn btn-primary"
@@ -64,15 +64,15 @@ export default function Login() {
               {loading ? 'Chargement…' : mode === 'login' ? 'Se connecter' : 'Créer le compte'}
             </button>
           </form>
-          <div style={{ marginTop: 16, textAlign: 'center', fontSize: 12, color: 'var(--text-muted)' }}>
+          <div style={{ marginTop: 16, textAlign: 'center', fontSize: 15, color: 'var(--text-muted)' }}>
             {mode === 'login' ? (
               <>Pas encore de compte ?{' '}
                 <button onClick={() => setMode('register')} style={{ background: 'none', border: 'none',
-                  color: 'var(--accent)', cursor: 'pointer', fontSize: 12 }}>Créer un compte</button></>
+                  color: 'var(--accent)', cursor: 'pointer', fontSize: 15 }}>Créer un compte</button></>
             ) : (
               <>Déjà un compte ?{' '}
                 <button onClick={() => setMode('login')} style={{ background: 'none', border: 'none',
-                  color: 'var(--accent)', cursor: 'pointer', fontSize: 12 }}>Se connecter</button></>
+                  color: 'var(--accent)', cursor: 'pointer', fontSize: 15 }}>Se connecter</button></>
             )}
           </div>
         </div>

@@ -53,20 +53,20 @@ function Field({ label, value, uncertain }: { label: string; value: React.ReactN
   if (value === null || value === undefined || value === '') return null
   return (
     <div style={{ marginBottom: 12 }}>
-      <div style={{ fontSize: 11, color: uncertain ? 'var(--accent-warn)' : 'var(--text-muted)',
+      <div style={{ fontSize: 15, color: uncertain ? 'var(--accent-warn)' : 'var(--text-muted)',
         marginBottom: 3, display: 'flex', alignItems: 'center', gap: 4 }}>
         {uncertain && <AlertTriangle size={10} />}
         {label}
       </div>
-      <div style={{ fontSize: 13, color: 'var(--text)' }}>{value}</div>
+      <div style={{ fontSize: 15, color: 'var(--text)' }}>{value}</div>
     </div>
   )
 }
 
 function BoolBadge({ value }: { value: boolean | null }) {
-  if (value === null) return <span style={{ color: 'var(--text-muted)', fontSize: 12 }}>—</span>
+  if (value === null) return <span style={{ color: 'var(--text-muted)', fontSize: 15 }}>—</span>
   return (
-    <span style={{ fontSize: 12, fontWeight: 500, color: value ? 'var(--accent-2)' : 'var(--text-muted)' }}>
+    <span style={{ fontSize: 15, fontWeight: 500, color: value ? 'var(--accent-2)' : 'var(--text-muted)' }}>
       {value ? '✓ Oui' : '✗ Non'}
     </span>
   )
@@ -107,27 +107,27 @@ export default function DocumentDetail() {
               {doc.title || doc.file_name}
             </h1>
             {doc.authors?.length > 0 && (
-              <div style={{ fontSize: 13, color: 'var(--text-muted)', marginBottom: 6 }}>
+              <div style={{ fontSize: 15, color: 'var(--text-muted)', marginBottom: 6 }}>
                 {doc.authors.slice(0, 4).join(', ')}{doc.authors.length > 4 ? ' et al.' : ''}
               </div>
             )}
             <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', alignItems: 'center' }}>
-              {doc.year && <span style={{ fontSize: 12, color: 'var(--text-muted)' }}>{doc.year}</span>}
-              {doc.journal && <span style={{ fontSize: 12, color: 'var(--text-muted)' }}>{doc.journal}</span>}
+              {doc.year && <span style={{ fontSize: 15, color: 'var(--text-muted)' }}>{doc.year}</span>}
+              {doc.journal && <span style={{ fontSize: 15, color: 'var(--text-muted)' }}>{doc.journal}</span>}
               {doc.doi && (
                 <a href={`https://doi.org/${doc.doi}`} target="_blank" rel="noreferrer"
-                  style={{ fontSize: 12, color: 'var(--accent)', display: 'flex', alignItems: 'center', gap: 3 }}>
+                  style={{ fontSize: 15, color: 'var(--accent)', display: 'flex', alignItems: 'center', gap: 3 }}>
                   DOI <ExternalLink size={10} />
                 </a>
               )}
               {doc.n_grade && <span className={`badge badge-${doc.n_grade}`}>{doc.n_grade}</span>}
               {doc.validation_status === 'uncertain' && (
-                <span style={{ fontSize: 11, color: 'var(--accent-warn)', display: 'flex', alignItems: 'center', gap: 3 }}>
+                <span style={{ fontSize: 15, color: 'var(--accent-warn)', display: 'flex', alignItems: 'center', gap: 3 }}>
                   <AlertTriangle size={11} /> Vérification conseillée
                 </span>
               )}
               {doc.validation_status === 'validated' && (
-                <span style={{ fontSize: 11, color: 'var(--accent-2)', display: 'flex', alignItems: 'center', gap: 3 }}>
+                <span style={{ fontSize: 15, color: 'var(--accent-2)', display: 'flex', alignItems: 'center', gap: 3 }}>
                   <CheckCircle size={11} /> Validé
                 </span>
               )}
@@ -149,7 +149,7 @@ export default function DocumentDetail() {
       {doc.domains?.length > 0 && (
         <div style={{ marginBottom: 24, display: 'flex', gap: 6, flexWrap: 'wrap' }}>
           {doc.domains.map(d => (
-            <span key={d.slug} style={{ fontSize: 12, color: 'var(--accent)',
+            <span key={d.slug} style={{ fontSize: 15, color: 'var(--accent)',
               background: 'rgba(91,141,238,0.1)', padding: '3px 10px', borderRadius: 20,
               border: '1px solid rgba(91,141,238,0.2)' }}>{d.label}</span>
           ))}
@@ -161,7 +161,7 @@ export default function DocumentDetail() {
         {/* Population */}
         <div className="card">
           <div style={{ display: 'flex', alignItems: 'center', gap: 7, marginBottom: 16,
-            fontSize: 13, fontWeight: 600 }}>
+            fontSize: 15, fontWeight: 600 }}>
             <Users size={15} color="var(--accent)" /> Population
           </div>
           <Field label="Type d'étude" value={doc.study_type} />
@@ -174,7 +174,7 @@ export default function DocumentDetail() {
           <Field label="Contexte diagnostic" value={doc.diagnosis_context_literal} uncertain={isUncertain('diagnosis_context_literal')} />
           <Field label="Recrutement" value={doc.recruitment_type} />
           {doc.university_flag && (
-            <div style={{ fontSize: 12, color: 'var(--accent-warn)', display: 'flex', gap: 4,
+            <div style={{ fontSize: 15, color: 'var(--accent-warn)', display: 'flex', gap: 4,
               alignItems: 'center', marginTop: 8, padding: '6px 8px', background: '#332a1310', borderRadius: 6 }}>
               <AlertTriangle size={12} /> Recrutement universitaire détecté
             </div>
@@ -183,11 +183,11 @@ export default function DocumentDetail() {
           <Field label="Répartition sexe" value={doc.sex_breakdown_literal} />
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8, marginTop: 8 }}>
             <div>
-              <div style={{ fontSize: 11, color: 'var(--text-muted)', marginBottom: 3 }}>Multi-site</div>
+              <div style={{ fontSize: 15, color: 'var(--text-muted)', marginBottom: 3 }}>Multi-site</div>
               <BoolBadge value={doc.multi_site} />
             </div>
             <div>
-              <div style={{ fontSize: 11, color: 'var(--text-muted)', marginBottom: 3 }}>Groupe contrôle</div>
+              <div style={{ fontSize: 15, color: 'var(--text-muted)', marginBottom: 3 }}>Groupe contrôle</div>
               <BoolBadge value={doc.control_group} />
             </div>
           </div>
@@ -196,44 +196,44 @@ export default function DocumentDetail() {
         {/* Qualité de preuve */}
         <div className="card">
           <div style={{ display: 'flex', alignItems: 'center', gap: 7, marginBottom: 16,
-            fontSize: 13, fontWeight: 600 }}>
+            fontSize: 15, fontWeight: 600 }}>
             <FlaskConical size={15} color="var(--accent-2)" /> Qualité de preuve
           </div>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
             <div>
-              <div style={{ fontSize: 11, color: 'var(--text-muted)', marginBottom: 3 }}>Outil diagnostique structuré</div>
+              <div style={{ fontSize: 15, color: 'var(--text-muted)', marginBottom: 3 }}>Outil diagnostique structuré</div>
               <BoolBadge value={doc.structured_diagnostic_tool} />
               {doc.diagnostic_tool_name && (
-                <div style={{ fontSize: 11, color: 'var(--accent)', marginTop: 2 }}>{doc.diagnostic_tool_name}</div>
+                <div style={{ fontSize: 15, color: 'var(--accent)', marginTop: 2 }}>{doc.diagnostic_tool_name}</div>
               )}
             </div>
             <div>
-              <div style={{ fontSize: 11, color: 'var(--text-muted)', marginBottom: 3 }}>Informateurs multiples</div>
+              <div style={{ fontSize: 15, color: 'var(--text-muted)', marginBottom: 3 }}>Informateurs multiples</div>
               <BoolBadge value={doc.multiple_informants} />
             </div>
             <div>
-              <div style={{ fontSize: 11, color: 'var(--text-muted)', marginBottom: 3 }}>Randomisé</div>
+              <div style={{ fontSize: 15, color: 'var(--text-muted)', marginBottom: 3 }}>Randomisé</div>
               <BoolBadge value={doc.randomized} />
             </div>
             <div>
-              <div style={{ fontSize: 11, color: 'var(--text-muted)', marginBottom: 3 }}>Longitudinal</div>
+              <div style={{ fontSize: 15, color: 'var(--text-muted)', marginBottom: 3 }}>Longitudinal</div>
               <BoolBadge value={doc.longitudinal} />
             </div>
           </div>
           {doc.medications_studied?.length > 0 && (
             <div style={{ marginTop: 16 }}>
-              <div style={{ fontSize: 11, color: 'var(--text-muted)', marginBottom: 6 }}>Médicaments étudiés</div>
+              <div style={{ fontSize: 15, color: 'var(--text-muted)', marginBottom: 6 }}>Médicaments étudiés</div>
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4 }}>
                 {doc.medications_studied.map(m => (
-                  <span key={m} style={{ fontSize: 11, background: 'rgba(61,214,140,0.1)',
+                  <span key={m} style={{ fontSize: 15, background: 'rgba(61,214,140,0.1)',
                     color: 'var(--accent-2)', padding: '2px 8px', borderRadius: 4 }}>{m}</span>
                 ))}
               </div>
             </div>
           )}
           <div style={{ marginTop: 16, paddingTop: 12, borderTop: '1px solid var(--border)' }}>
-            <div style={{ fontSize: 11, color: 'var(--text-muted)', marginBottom: 4 }}>Confiance extraction IA</div>
-            <span style={{ fontSize: 12, fontWeight: 500,
+            <div style={{ fontSize: 15, color: 'var(--text-muted)', marginBottom: 4 }}>Confiance extraction IA</div>
+            <span style={{ fontSize: 15, fontWeight: 500,
               color: doc.extraction_confidence === 'high' ? 'var(--accent-2)' :
                      doc.extraction_confidence === 'medium' ? 'var(--accent-warn)' : 'var(--accent-danger)' }}>
               {doc.extraction_confidence || '—'}
@@ -245,13 +245,13 @@ export default function DocumentDetail() {
         {doc.key_findings_literal?.length > 0 && (
           <div className="card" style={{ gridColumn: '1 / -1' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 7, marginBottom: 16,
-              fontSize: 13, fontWeight: 600 }}>
+              fontSize: 15, fontWeight: 600 }}>
               <BookOpen size={15} color="#a78bfa" /> Résultats clés extraits
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
               {doc.key_findings_literal.map((f, i) => (
                 <div key={i} style={{ display: 'flex', gap: 10, padding: '10px 12px',
-                  background: 'var(--bg-3)', borderRadius: 8, fontSize: 13 }}>
+                  background: 'var(--bg-3)', borderRadius: 8, fontSize: 15 }}>
                   <span style={{ color: 'var(--text-muted)', flexShrink: 0, marginTop: 1 }}>{i + 1}.</span>
                   <span style={{ fontStyle: 'italic', color: 'var(--text)' }}>"{f}"</span>
                 </div>
@@ -264,12 +264,12 @@ export default function DocumentDetail() {
         {doc.limitations_literal?.length > 0 && (
           <div className="card" style={{ gridColumn: '1 / -1' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 7, marginBottom: 16,
-              fontSize: 13, fontWeight: 600 }}>
+              fontSize: 15, fontWeight: 600 }}>
               <AlertTriangle size={15} color="var(--accent-warn)" /> Limitations identifiées
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
               {doc.limitations_literal.map((l, i) => (
-                <div key={i} style={{ display: 'flex', gap: 10, fontSize: 13,
+                <div key={i} style={{ display: 'flex', gap: 10, fontSize: 15,
                   padding: '8px 12px', background: 'rgba(245,166,35,0.05)', borderRadius: 6 }}>
                   <span style={{ color: 'var(--accent-warn)', flexShrink: 0 }}>•</span>
                   <span>{l}</span>
@@ -284,12 +284,12 @@ export default function DocumentDetail() {
           <div className="card" style={{ gridColumn: '1 / -1',
             borderColor: 'rgba(245,166,35,0.3)', background: 'rgba(245,166,35,0.03)' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 7, marginBottom: 10,
-              fontSize: 13, fontWeight: 600, color: 'var(--accent-warn)' }}>
+              fontSize: 15, fontWeight: 600, color: 'var(--accent-warn)' }}>
               <AlertTriangle size={15} /> Champs à vérifier manuellement
             </div>
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
               {doc.uncertain_fields.map(f => (
-                <span key={f} style={{ fontSize: 11, background: 'rgba(245,166,35,0.1)',
+                <span key={f} style={{ fontSize: 15, background: 'rgba(245,166,35,0.1)',
                   color: 'var(--accent-warn)', padding: '2px 8px', borderRadius: 4 }}>{f}</span>
               ))}
             </div>

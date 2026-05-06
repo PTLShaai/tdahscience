@@ -76,7 +76,7 @@ export default function DomainDetail() {
         <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 30, marginBottom: 6 }}>
           {data.label}
         </h1>
-        <p style={{ color: 'var(--text-muted)', fontSize: 14 }}>
+        <p style={{ color: 'var(--text-muted)', fontSize: 16 }}>
           {docs.length} article(s) dans ce domaine
         </p>
       </div>
@@ -86,7 +86,7 @@ export default function DomainDetail() {
         {tabs.map(t => (
           <button key={t.id} onClick={() => setActiveTab(t.id)}
             style={{ padding: '10px 20px', background: 'none', border: 'none',
-              fontSize: 14, fontWeight: activeTab === t.id ? 600 : 400,
+              fontSize: 16, fontWeight: activeTab === t.id ? 600 : 400,
               color: activeTab === t.id ? 'var(--accent)' : 'var(--text-muted)',
               borderBottom: activeTab === t.id ? '2px solid var(--accent)' : '2px solid transparent',
               marginBottom: -2, cursor: 'pointer', transition: 'all 0.12s' }}>
@@ -102,7 +102,7 @@ export default function DomainDetail() {
           {years.length > 0 && (
             <div className="card" style={{ gridColumn: '1 / -1' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 20,
-                fontSize: 14, fontWeight: 600 }}>
+                fontSize: 16, fontWeight: 600 }}>
                 <TrendingUp size={16} color="var(--accent)" /> Publications par année
               </div>
               <div style={{ display: 'flex', alignItems: 'flex-end', gap: 6, height: 100 }}>
@@ -118,7 +118,7 @@ export default function DomainDetail() {
                 ))}
               </div>
               {years.length === 1 && (
-                <div style={{ fontSize: 12, color: 'var(--text-muted)', marginTop: 8 }}>
+                <div style={{ fontSize: 15, color: 'var(--text-muted)', marginTop: 8 }}>
                   Un seul article pour l'instant — les tendances apparaîtront avec plus de données.
                 </div>
               )}
@@ -127,7 +127,7 @@ export default function DomainDetail() {
 
           {/* Distribution grades */}
           <div className="card">
-            <div style={{ fontSize: 14, fontWeight: 600, marginBottom: 16, display: 'flex', gap: 8, alignItems: 'center' }}>
+            <div style={{ fontSize: 16, fontWeight: 600, marginBottom: 16, display: 'flex', gap: 8, alignItems: 'center' }}>
               <Users size={15} color="var(--accent-2)" /> Taille des populations
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
@@ -138,16 +138,16 @@ export default function DomainDetail() {
                     <div style={{ height: '100%', background: 'var(--accent)', borderRadius: 4,
                       width: `${(gradeDistrib[g] / docs.length) * 100}%` }} />
                   </div>
-                  <span style={{ fontSize: 12, color: 'var(--text-muted)', width: 60 }}>
+                  <span style={{ fontSize: 15, color: 'var(--text-muted)', width: 60 }}>
                     {gradeLabel[g]}
                   </span>
-                  <span style={{ fontSize: 12, fontWeight: 500, width: 20, textAlign: 'right' }}>
+                  <span style={{ fontSize: 15, fontWeight: 500, width: 20, textAlign: 'right' }}>
                     {gradeDistrib[g]}
                   </span>
                 </div>
               ))}
               {gradeOrder.every(g => !gradeDistrib[g]) && (
-                <div style={{ fontSize: 13, color: 'var(--text-muted)' }}>
+                <div style={{ fontSize: 15, color: 'var(--text-muted)' }}>
                   Données de population non disponibles
                 </div>
               )}
@@ -156,24 +156,24 @@ export default function DomainDetail() {
 
           {/* Types d'études */}
           <div className="card">
-            <div style={{ fontSize: 14, fontWeight: 600, marginBottom: 16, display: 'flex', gap: 8, alignItems: 'center' }}>
+            <div style={{ fontSize: 16, fontWeight: 600, marginBottom: 16, display: 'flex', gap: 8, alignItems: 'center' }}>
               <BookOpen size={15} color="#a78bfa" /> Types d'études
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
               {Object.entries(studyTypes).sort(([,a],[,b]) => b-a).map(([type, count]) => (
                 <div key={type} style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                  <div style={{ flex: 1, fontSize: 13, color: 'var(--text)' }}>
+                  <div style={{ flex: 1, fontSize: 15, color: 'var(--text)' }}>
                     {type.replace(/_/g, ' ')}
                   </div>
                   <div style={{ width: 60, height: 6, background: 'var(--bg-3)', borderRadius: 3, overflow: 'hidden' }}>
                     <div style={{ height: '100%', background: '#a78bfa', borderRadius: 3,
                       width: `${(count / docs.length) * 100}%` }} />
                   </div>
-                  <span style={{ fontSize: 12, fontWeight: 500, width: 20, textAlign: 'right' }}>{count}</span>
+                  <span style={{ fontSize: 15, fontWeight: 500, width: 20, textAlign: 'right' }}>{count}</span>
                 </div>
               ))}
               {Object.keys(studyTypes).length === 0 && (
-                <div style={{ fontSize: 13, color: 'var(--text-muted)' }}>Non disponible</div>
+                <div style={{ fontSize: 15, color: 'var(--text-muted)' }}>Non disponible</div>
               )}
             </div>
           </div>
@@ -185,10 +185,10 @@ export default function DomainDetail() {
               <div style={{ display: 'flex', gap: 10, alignItems: 'flex-start' }}>
                 <AlertTriangle size={16} color="var(--accent-warn)" style={{ marginTop: 2, flexShrink: 0 }} />
                 <div>
-                  <div style={{ fontSize: 14, fontWeight: 600, color: 'var(--accent-warn)', marginBottom: 4 }}>
+                  <div style={{ fontSize: 16, fontWeight: 600, color: 'var(--accent-warn)', marginBottom: 4 }}>
                     Recrutement universitaire détecté dans {docs.filter(d => d.university_flag).length} article(s)
                   </div>
-                  <div style={{ fontSize: 13, color: 'var(--text-muted)' }}>
+                  <div style={{ fontSize: 15, color: 'var(--text-muted)' }}>
                     Des articles de ce domaine utilisent des échantillons d'étudiants universitaires,
                     ce qui peut limiter la généralisabilité des résultats.
                   </div>
@@ -211,18 +211,18 @@ export default function DomainDetail() {
               <div style={{ display: 'flex', alignItems: 'flex-start', gap: 12 }}>
                 <FileText size={15} color="var(--text-muted)" style={{ marginTop: 2, flexShrink: 0 }} />
                 <div style={{ flex: 1 }}>
-                  <div style={{ fontSize: 14, fontWeight: 500, marginBottom: 4 }}>
+                  <div style={{ fontSize: 16, fontWeight: 500, marginBottom: 4 }}>
                     {doc.title || doc.file_name}
                   </div>
                   <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', alignItems: 'center' }}>
-                    {doc.year && <span style={{ fontSize: 12, color: 'var(--text-muted)' }}>{doc.year}</span>}
+                    {doc.year && <span style={{ fontSize: 15, color: 'var(--text-muted)' }}>{doc.year}</span>}
                     {doc.n_grade && <span className={`badge badge-${doc.n_grade}`}>{doc.n_grade}</span>}
                     {doc.study_type && (
-                      <span style={{ fontSize: 11, background: 'var(--bg-3)', color: 'var(--text-muted)',
+                      <span style={{ fontSize: 15, background: 'var(--bg-3)', color: 'var(--text-muted)',
                         padding: '1px 7px', borderRadius: 4 }}>{doc.study_type.replace(/_/g,' ')}</span>
                     )}
                     {doc.university_flag && (
-                      <span style={{ fontSize: 11, color: 'var(--accent-warn)', display: 'flex',
+                      <span style={{ fontSize: 15, color: 'var(--accent-warn)', display: 'flex',
                         alignItems: 'center', gap: 3 }}>
                         <AlertTriangle size={10} /> recrutement univ.
                       </span>
@@ -239,7 +239,7 @@ export default function DomainDetail() {
       {activeTab === 'findings' && (
         <div>
           {allFindings.length === 0 ? (
-            <div style={{ textAlign: 'center', padding: '48px 0', color: 'var(--text-muted)', fontSize: 14 }}>
+            <div style={{ textAlign: 'center', padding: '48px 0', color: 'var(--text-muted)', fontSize: 16 }}>
               Aucun résultat extrait pour ce domaine
             </div>
           ) : (
@@ -248,11 +248,11 @@ export default function DomainDetail() {
                 <div key={i} style={{ padding: '14px 18px', background: 'var(--bg-2)',
                   border: '1px solid var(--border)', borderLeft: '3px solid var(--accent)',
                   borderRadius: '0 var(--radius-lg) var(--radius-lg) 0' }}>
-                  <div style={{ fontSize: 14, fontStyle: 'italic', marginBottom: 8, lineHeight: 1.5 }}>
+                  <div style={{ fontSize: 16, fontStyle: 'italic', marginBottom: 8, lineHeight: 1.5 }}>
                     "{finding}"
                   </div>
                   <button onClick={() => navigate(`/documents/${doc.id}`)}
-                    style={{ fontSize: 12, color: 'var(--accent)', background: 'none', border: 'none',
+                    style={{ fontSize: 15, color: 'var(--accent)', background: 'none', border: 'none',
                       cursor: 'pointer', padding: 0, display: 'flex', alignItems: 'center', gap: 4 }}>
                     <FileText size={11} />
                     {doc.title || doc.file_name}

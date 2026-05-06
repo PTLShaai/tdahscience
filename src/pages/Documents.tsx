@@ -69,7 +69,7 @@ export default function Documents() {
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 28 }}>
         <div>
           <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 28, marginBottom: 6 }}>Documents</h1>
-          <p style={{ color: 'var(--text-muted)', fontSize: 14 }}>
+          <p style={{ color: 'var(--text-muted)', fontSize: 16 }}>
             Importez vos PDFs — l'analyse IA démarre automatiquement
           </p>
         </div>
@@ -88,10 +88,10 @@ export default function Documents() {
           gap: 10, padding: 36, marginBottom: 16, transition: 'all 0.15s' }}>
         <Upload size={26} color={dragging ? 'var(--accent)' : 'var(--text-muted)'} />
         <div style={{ textAlign: 'center' }}>
-          <div style={{ fontSize: 14, fontWeight: 500, marginBottom: 3 }}>
+          <div style={{ fontSize: 16, fontWeight: 500, marginBottom: 3 }}>
             {uploading ? 'Upload en cours…' : 'Glissez vos PDFs ici ou cliquez'}
           </div>
-          <div style={{ fontSize: 12, color: 'var(--text-muted)' }}>Plusieurs fichiers acceptés</div>
+          <div style={{ fontSize: 15, color: 'var(--text-muted)' }}>Plusieurs fichiers acceptés</div>
         </div>
         <input ref={fileRef} type="file" accept=".pdf" multiple style={{ display: 'none' }}
           onChange={e => handleFiles(e.target.files)} />
@@ -99,17 +99,17 @@ export default function Documents() {
 
       {uploadMsg && (
         <div style={{ marginBottom: 16, padding: '10px 14px', background: 'var(--bg-3)',
-          borderRadius: 8, fontSize: 13, color: 'var(--text-muted)', border: '1px solid var(--border)' }}>
+          borderRadius: 8, fontSize: 15, color: 'var(--text-muted)', border: '1px solid var(--border)' }}>
           {uploadMsg}
         </div>
       )}
 
       {loading ? (
-        <div style={{ textAlign: 'center', padding: '40px 0', color: 'var(--text-muted)', fontSize: 13 }}>
+        <div style={{ textAlign: 'center', padding: '40px 0', color: 'var(--text-muted)', fontSize: 15 }}>
           Chargement…
         </div>
       ) : docs.length === 0 ? (
-        <div style={{ textAlign: 'center', padding: '48px 0', color: 'var(--text-muted)', fontSize: 13 }}>
+        <div style={{ textAlign: 'center', padding: '48px 0', color: 'var(--text-muted)', fontSize: 15 }}>
           <FileText size={32} style={{ marginBottom: 12, opacity: 0.3 }} />
           <div>Aucun document importé</div>
         </div>
@@ -123,26 +123,26 @@ export default function Documents() {
                 <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
                   <FileText size={15} color="var(--text-muted)" style={{ flexShrink: 0 }} />
                   <div style={{ flex: 1, minWidth: 0 }}>
-                    <div style={{ fontSize: 13, fontWeight: 500, whiteSpace: 'nowrap',
+                    <div style={{ fontSize: 15, fontWeight: 500, whiteSpace: 'nowrap',
                       overflow: 'hidden', textOverflow: 'ellipsis' }}>
                       {doc.title || doc.file_name}
                     </div>
                     <div style={{ display: 'flex', gap: 6, marginTop: 4, flexWrap: 'wrap', alignItems: 'center' }}>
-                      {doc.year && <span style={{ fontSize: 11, color: 'var(--text-muted)' }}>{doc.year}</span>}
+                      {doc.year && <span style={{ fontSize: 15, color: 'var(--text-muted)' }}>{doc.year}</span>}
                       {doc.n_grade && <span className={`badge badge-${doc.n_grade}`}>{doc.n_grade}</span>}
                       {doc.domains?.slice(0, 4).map((d: string) => (
-                        <span key={d} style={{ fontSize: 11, color: 'var(--accent)',
+                        <span key={d} style={{ fontSize: 15, color: 'var(--accent)',
                           background: 'rgba(91,141,238,0.1)', padding: '1px 6px', borderRadius: 4 }}>{d}</span>
                       ))}
                     </div>
                   </div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 5, color, fontSize: 12, flexShrink: 0 }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 5, color, fontSize: 15, flexShrink: 0 }}>
                     <StatusIcon size={13} />
                     {label}
                   </div>
                 </div>
                 {doc.validation_status === 'uncertain' && (
-                  <div style={{ marginTop: 8, display: 'flex', gap: 6, color: 'var(--accent-warn)', fontSize: 12 }}>
+                  <div style={{ marginTop: 8, display: 'flex', gap: 6, color: 'var(--accent-warn)', fontSize: 15 }}>
                     <AlertTriangle size={13} style={{ flexShrink: 0, marginTop: 1 }} />
                     Certains champs nécessitent une vérification manuelle
                   </div>

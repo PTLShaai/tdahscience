@@ -16,30 +16,46 @@
   --radius-lg: 14px;
 }
 
-* { box-sizing: border-box; margin: 0; padding: 0; }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { font-size: 16px; }
 
 body {
   background: var(--bg);
   color: var(--text);
   font-family: var(--font-body);
-  font-size: 15px;
+  font-size: 1rem;
   line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
 }
 
 a { color: var(--accent); text-decoration: none; }
-button { cursor: pointer; font-family: var(--font-body); font-size: 14px; }
-input, textarea, select { font-family: var(--font-body); font-size: 15px; }
+
+button, input, textarea, select {
+  cursor: pointer;
+  font-family: var(--font-body);
+  font-size: 1rem;
+}
+
+input, textarea, select { cursor: text; }
 
 .btn {
   display: inline-flex; align-items: center; gap: 7px;
-  padding: 9px 16px; border-radius: var(--radius);
-  border: none; font-size: 14px; font-weight: 500;
+  padding: 9px 18px; border-radius: var(--radius);
+  border: none; font-size: 0.9rem; font-weight: 500;
   transition: all 0.15s ease; text-decoration: none;
+  white-space: nowrap;
 }
 .btn-primary { background: var(--accent); color: #fff; }
 .btn-primary:hover { background: #2d52c4; }
-.btn-ghost { background: transparent; color: var(--text-muted); border: 1px solid var(--border); }
-.btn-ghost:hover { color: var(--text); border-color: var(--accent); background: rgba(59,98,212,0.04); }
+.btn-ghost {
+  background: transparent; color: var(--text-muted);
+  border: 1px solid var(--border);
+}
+.btn-ghost:hover {
+  color: var(--text); border-color: var(--accent);
+  background: rgba(59,98,212,0.04);
+}
 
 .card {
   background: var(--bg-2);
@@ -49,10 +65,19 @@ input, textarea, select { font-family: var(--font-body); font-size: 15px; }
   box-shadow: var(--shadow);
 }
 
+/* Labels et textes secondaires */
+.label {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
 .badge {
   display: inline-flex; align-items: center;
   padding: 2px 8px; border-radius: 5px;
-  font-size: 11px; font-weight: 700;
+  font-size: 0.7rem; font-weight: 700;
   letter-spacing: 0.04em; text-transform: uppercase;
 }
 .badge-A { background: #dcfce7; color: #15803d; }
@@ -62,3 +87,8 @@ input, textarea, select { font-family: var(--font-body); font-size: 15px; }
 .badge-E { background: #fee2e2; color: #b91c1c; }
 .badge-F { background: #fce7f3; color: #be185d; }
 .badge-unknown { background: var(--bg-3); color: var(--text-muted); }
+
+/* Scrollbar discrète */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }

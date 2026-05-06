@@ -30,7 +30,7 @@ export default function Dashboard() {
         <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 28, marginBottom: 6 }}>
           Tableau de bord
         </h1>
-        <p style={{ color: 'var(--text-muted)', fontSize: 14 }}>
+        <p style={{ color: 'var(--text-muted)', fontSize: 16 }}>
           Vue d'ensemble de votre base de connaissances
         </p>
       </div>
@@ -41,7 +41,7 @@ export default function Dashboard() {
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
               <div>
                 <div style={{ fontSize: 28, fontWeight: 600, marginBottom: 4 }}>{value}</div>
-                <div style={{ fontSize: 12, color: 'var(--text-muted)' }}>{label}</div>
+                <div style={{ fontSize: 15, color: 'var(--text-muted)' }}>{label}</div>
               </div>
               <div style={{ background: `${color}18`, borderRadius: 8, padding: 8 }}>
                 <Icon size={18} color={color} />
@@ -52,11 +52,11 @@ export default function Dashboard() {
       </div>
 
       <div className="card">
-        <div style={{ fontSize: 13, fontWeight: 500, marginBottom: 16, color: 'var(--text-muted)' }}>
+        <div style={{ fontSize: 15, fontWeight: 500, marginBottom: 16, color: 'var(--text-muted)' }}>
           Tendances des domaines — disponible après 10+ documents
         </div>
         <div style={{ height: 120, display: 'flex', alignItems: 'center', justifyContent: 'center',
-          color: 'var(--text-muted)', fontSize: 13, borderRadius: 8, border: '1px dashed var(--border)' }}>
+          color: 'var(--text-muted)', fontSize: 15, borderRadius: 8, border: '1px dashed var(--border)' }}>
           {stats.total < 10 ? `${stats.total}/10 documents analysés` : 'Graphique à venir'}
         </div>
       </div>

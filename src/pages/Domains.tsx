@@ -22,7 +22,7 @@ export default function Domains() {
         <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 28, marginBottom: 6 }}>
           Domaines de recherche
         </h1>
-        <p style={{ color: 'var(--text-muted)', fontSize: 14 }}>
+        <p style={{ color: 'var(--text-muted)', fontSize: 16 }}>
           {domains.length} domaine(s) · Cliquez pour explorer la littérature associée
         </p>
       </div>
@@ -32,7 +32,7 @@ export default function Domains() {
           <div style={{ display: 'flex', gap: 12, justifyContent: 'center', opacity: 0.3, marginBottom: 12 }}>
             <Tag size={28} /><GitMerge size={28} />
           </div>
-          <div style={{ fontSize: 14 }}>Les domaines apparaîtront après l'analyse des premiers documents</div>
+          <div style={{ fontSize: 16 }}>Les domaines apparaîtront après l'analyse des premiers documents</div>
         </div>
       ) : (
         <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
@@ -50,12 +50,12 @@ export default function Domains() {
               <div style={{ flex: 1 }}>
                 <div style={{ fontSize: 15, fontWeight: 500, marginBottom: 3 }}>{d.label}</div>
                 {d.aliases?.length > 1 && (
-                  <div style={{ fontSize: 12, color: 'var(--text-muted)' }}>
+                  <div style={{ fontSize: 15, color: 'var(--text-muted)' }}>
                     Aussi : {d.aliases.slice(0,3).join(', ')}
                   </div>
                 )}
               </div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 6, color: 'var(--text-muted)', fontSize: 13 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 6, color: 'var(--text-muted)', fontSize: 15 }}>
                 <FileText size={13} />
                 {d.doc_count} article{d.doc_count > 1 ? 's' : ''}
               </div>
