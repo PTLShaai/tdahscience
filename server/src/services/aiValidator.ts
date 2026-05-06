@@ -39,7 +39,7 @@ export async function validateWithSecondaryAI(
 
 CHAMPS À VALIDER :
 ${fieldsToValidate.map(([field, citation]) => {
-  const value = (extraction as Record<string, unknown>)[field]
+  const value = (extraction as unknown as Record<string, unknown>)[field]
   return `- ${field}: valeur="${JSON.stringify(value)}" | citation="${citation}"`
 }).join('\n')}
 
