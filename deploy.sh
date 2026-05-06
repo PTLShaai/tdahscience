@@ -50,7 +50,7 @@ set -a; source "$DEPLOY_DIR/.env"; set +a
 node dist/db/migrate.js
 echo "  → Migrations OK"
 
-# 6. Redémarrer PM2 via ecosystem.config.js
+# 6. Redémarrer PM2 via ecosystem.config.cjs
 # (charge le .env automatiquement depuis la racine du projet)
 echo ""
 echo "🔄 [6/6] Redémarrage PM2 (port $PORT)..."
@@ -63,7 +63,7 @@ if pm2 describe "$PM2_NAME" > /dev/null 2>&1; then
 fi
 
 pm2 delete "$PM2_NAME" > /dev/null 2>&1 || true
-pm2 start "$DEPLOY_DIR/ecosystem.config.js" --update-env
+pm2 start "$DEPLOY_DIR/ecosystem.config.cjs" --update-env
 pm2 save
 pm2 list
 
