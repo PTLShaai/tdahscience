@@ -19,12 +19,13 @@ cd /var/www
 git clone https://github.com/PTLShaai/tdahscience.git
 cd tdahscience
 
-# 2. Créer le fichier .env
-cp .env.example .env
-nano .env   # remplir les variables
+# 2. Créer l'utilisateur et la base PostgreSQL dédiés
+# (génère un mot de passe aléatoire et affiche la DATABASE_URL à copier)
+sudo -u postgres bash setup_db.sh
 
-# 3. Créer la base de données PostgreSQL
-createdb tdahscience
+# 3. Créer le fichier .env
+cp .env.example .env
+nano .env   # coller la DATABASE_URL affichée + remplir les autres variables
 
 # 4. Déployer
 bash deploy.sh
