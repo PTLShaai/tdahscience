@@ -181,7 +181,7 @@ router.post('/:id/retry', async (req: AuthRequest, res: Response): Promise<void>
     const result = await query<{ id: string }>(
       `UPDATE import_jobs
        SET status = 'pending', attempt_count = 0, error_message = NULL, started_at = NULL
-       WHERE document_id = $1 AND status = 'error'
+       WHERE document_id = $1 AND status IN ('error', 'processing')
        RETURNING id`,
       [req.params.id]
     )

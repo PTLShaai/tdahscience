@@ -187,6 +187,21 @@ let isRunning = false
 export async function startWorker(): Promise<void> {
   console.log('[worker] 🔄 Worker d\'extraction démarré')
 
+  // Remettre en pending les jobs bloqués en 'processing' depuis +10min
+  try {
+    const stuck = await query<{id: string}>(
+      `UPDATE import_jobs SET status = 'pending', started_at = NULL
+       WHERE status = 'processing'
+         AND started_at < NOW() - INTERVAL '10 minutes'
+       RETURNING id`
+    )
+    if (stuck.length > 0) {
+      console.log(`[worker] ⚠️  ${stuck.length} job(s) bloqué(s) remis en queue`)
+    }
+  } catch (e) {
+    console.error('[worker] Erreur cleanup:', e)
+  }
+
   const tick = async () => {
     if (isRunning) return
     isRunning = true
