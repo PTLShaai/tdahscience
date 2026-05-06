@@ -77,6 +77,21 @@ export const api = {
   retryDocument: (id: string) =>
     request<{ok: boolean}>(`/documents/${id}/retry`, { method: 'POST' }),
 
+  exportDocs: (documentIds: string[], format: 'pdf'|'zip', domainLabel: string) => {
+    const token = localStorage.getItem('token')
+    return fetch('/api/export', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      },
+      body: JSON.stringify({ document_ids: documentIds, format, domain_label: domainLabel }),
+    }).then(r => {
+      if (!r.ok) throw new Error('Erreur export')
+      return r.blob()
+    })
+  },
+
   getTopics: () =>
     request<Topic[]>('/topics'),
 }

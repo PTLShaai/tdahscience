@@ -8,6 +8,7 @@ import topicsRoutes    from './routes/topics'
 import documentsRoutes from './routes/documents'
 import domainsRoutes   from './routes/domains'
 import jobsRoutes      from './routes/jobs'
+import exportRoutes    from './routes/export'
 
 const app = express()
 
@@ -24,6 +25,7 @@ app.use('/api/topics',    topicsRoutes)
 app.use('/api/documents', documentsRoutes)
 app.use('/api/domains',   domainsRoutes)
 app.use('/api/jobs',      jobsRoutes)
+app.use('/api/export',    exportRoutes)
 
 app.get('/api/health', (_req, res) => {
   res.json({ status: 'ok', version: '1.0.0', timestamp: new Date().toISOString() })
